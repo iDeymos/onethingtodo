@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, SafeAreaView, Alert } from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView, Alert, TouchableOpacity} from 'react-native';
 
 export default function App() {
   const handleButtonPress = () => Alert.alert("Onethingtodo сообщает", "Первое тестовое сообщение", [
@@ -12,18 +12,26 @@ export default function App() {
 
   return (
     <SafeAreaView style={styles.mainBlock}>
-        <View style={[styles.box, {backgroundColor: 'red'}]}>
+
+      <TouchableOpacity onPress={() => console.log('Жмяк по To do')}>
+        <View style={[styles.box, {backgroundColor: 'red'}]} >
           <Text>To do {'\n'}</Text>
         </View>
+      </TouchableOpacity>
+
+      <TouchableOpacity onPress={() => console.log('Жмяк по дате')}>
         <View style={[styles.box, {backgroundColor: 'grey'}]}>
           <Text>When {'\n'}Today</Text>
         </View>
+      </TouchableOpacity>
+
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   mainBlock: {
+    paddingTop: 30,
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-around',
