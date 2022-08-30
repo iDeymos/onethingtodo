@@ -1,46 +1,44 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, SafeAreaView, Alert, TouchableOpacity} from 'react-native';
+import React, { useState } from 'react';
+import { FlatList, StyleSheet, Text, View } from 'react-native';
+import Header from './components/Header';
+import Listitem from './components/ListItem'
+import Form from './components/Form'
 
 export default function App() {
-  const handleButtonPress = () => Alert.alert("Onethingtodo сообщает", "Первое тестовое сообщение", [
-    {text: "Ok", onPress: () => console.log('Oke')},
-    {text: "Cancel", onPress: () => console.log('Niet')}
-  ]);
 
-  const messageBox = <Text style={styles.box}>- Hello there!</Text>
-  const messageBox2 = <Text style={styles.box}>- General Kenobi.</Text>
+  const [listOfItems, setListOfItems] = useState([
+    {text: 'Купить молоко', key: '1'},
+    {text: 'Помыть машину', key: '2'},
+    {text: 'Купить картошку', key: '3'},
+    {text: 'Стать миллионером', key: '4'},
+  ])
 
-  return (
-    <SafeAreaView style={styles.mainBlock}>
+  const addHandler = (text) => {
+    setListOfItems((list) => {
+      return [
+        { text: text, key: Math.random().toString(36).substring(7) },
+        ...list
+      ]
+    })
+  }
 
-      <TouchableOpacity onPress={() => console.log('Жмяк по To do')}>
-        <View style={[styles.box, {backgroundColor: 'red'}]} >
-          <Text>To do {'\n'}</Text>
-        </View>
-      </TouchableOpacity>
+const deleteHandler = (key) => {
+  setListOfItems((list) => {
+    return list.filter(listOfItems => listOfItems.key != key)
+  });
 
-      <TouchableOpacity onPress={() => console.log('Жмяк по дате')}>
-        <View style={[styles.box, {backgroundColor: 'grey'}]}>
-          <Text>When {'\n'}Today</Text>
-        </View>
-      </TouchableOpacity>
-
-    </SafeAreaView>
-  );
 }
 
-const styles = StyleSheet.create({
-  mainBlock: {
-    paddingTop: 30,
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    alignItems: 'baseline'
-  },
-  box: {
-    width: 100,
-    height: 50,
-    justifyContent: 'center',
-    alignItems: 'center'
-  }
-});
+  return (
+    <View>
+      <Header></Header>
+      <Form addHandler={addHandler}/>
+      <View>
+        <FlatList data={listOfItems} renderItem={({ item }) => (
+          <Listitem el={item} deleteHandler={deleteHandler}></Listitem>
+        )} />
+      </View>
+    </View>
+  );
+}
